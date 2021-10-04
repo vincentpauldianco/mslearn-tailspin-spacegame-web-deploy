@@ -3,8 +3,6 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-<<<<<<< HEAD
-=======
   releaseBranchName: 'release'
 
 schedules:
@@ -13,8 +11,7 @@ schedules:
   branches:
     include:
     - release
-  always: false 
->>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
+  always: false
 
 stages:
 - stage: 'Build'
