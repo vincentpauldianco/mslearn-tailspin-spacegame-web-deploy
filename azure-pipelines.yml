@@ -3,6 +3,18 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
+<<<<<<< HEAD
+=======
+  releaseBranchName: 'release'
+
+schedules:
+- cron: '0 3 * * *'
+  displayName: 'Deploy every day at 3 A.M.'
+  branches:
+    include:
+    - release
+  always: false 
+>>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
 
 stages:
 - stage: 'Build'
@@ -68,6 +80,15 @@ stages:
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
   dependsOn: Build
+<<<<<<< HEAD
+=======
+  condition: |
+    and
+    (
+      succeeded(),
+      eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
+    )
+>>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
   jobs:
   - deployment: Deploy
     pool:
@@ -91,6 +112,10 @@ stages:
 - stage: 'Test'
   displayName: 'Deploy to the test environment'
   dependsOn: Dev
+<<<<<<< HEAD
+=======
+  #condition: eq(variables['Build.Reason'], 'Schedule')
+>>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
   jobs:
   - deployment: Deploy
     pool:
@@ -131,6 +156,7 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
+<<<<<<< HEAD
               deployToSlotOrASE: 'true'
               resourceGroupName: 'tailspin-space-game-rg'
               slotName: 'swap'
@@ -145,3 +171,7 @@ stages:
               sourceSlot: 'swap'
               targetSlot: 'production'
               action: 'Swap Slots'
+=======
+              appName: '$(WebAppNameStaging)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+>>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
