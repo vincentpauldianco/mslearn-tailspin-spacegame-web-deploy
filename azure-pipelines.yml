@@ -1,9 +1,14 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
 trigger:
 - '*'
 
 variables:
   buildConfiguration: 'Release'
-  releaseBranchName: 'release'
+  releaseBranchName: 'demo-release-pipelines'
 
 schedules:
 - cron: '0 3 * * *'
@@ -11,7 +16,7 @@ schedules:
   branches:
     include:
     - release
-  always: false
+  always: false 
 
 stages:
 - stage: 'Build'
@@ -77,15 +82,12 @@ stages:
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
   dependsOn: Build
-<<<<<<< HEAD
-=======
   condition: |
     and
     (
       succeeded(),
       eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
     )
->>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
   jobs:
   - deployment: Deploy
     pool:
@@ -109,10 +111,7 @@ stages:
 - stage: 'Test'
   displayName: 'Deploy to the test environment'
   dependsOn: Dev
-<<<<<<< HEAD
-=======
   #condition: eq(variables['Build.Reason'], 'Schedule')
->>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
   jobs:
   - deployment: Deploy
     pool:
@@ -153,22 +152,5 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-<<<<<<< HEAD
-              deployToSlotOrASE: 'true'
-              resourceGroupName: 'tailspin-space-game-rg'
-              slotName: 'swap'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-          - task: AzureAppServiceManage@0
-            displayName: 'Swap deployment slots'
-            inputs:
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              resourceGroupName: 'tailspin-space-game-rg'
-              webAppName: '$(WebAppNameStaging)'
-              sourceSlot: 'swap'
-              targetSlot: 'production'
-              action: 'Swap Slots'
-=======
-              appName: '$(WebAppNameStaging)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
->>>>>>> dee424065b319e8813789ef904cc85e3f8a7d87c
